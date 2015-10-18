@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context path="/lab2"
+         docBase="lab2"
+         debug="5"
+         reloadable="true"
+         crossContext="true">
+    <Resource name="jdbc/TestJeeDB"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="100"
+              maxIdle="30"
+              maxWait="10000"
+              username="am05130"
+              password="bob12"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://log720.logti.etsmtl.ca:5432/log720_20153_5"/>
+</Context>

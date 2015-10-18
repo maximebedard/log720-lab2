@@ -5,8 +5,8 @@
   <artifactId>equipe05-log720-a11-lab2</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>equipe05-log720-a11-lab2 Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>lab2</name>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -28,6 +28,11 @@
       <version>2.1</version>
       <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.4-1204-jdbc42</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -47,8 +52,10 @@
         <version>8.0.0.M3</version>
         <configuration>
           <webAppConfig>
-            <contextPath>/</contextPath>
+            <contextPath>/${project.name}</contextPath>
           </webAppConfig>
+            <stopKey/>
+            <stopPort/>
         </configuration>
       </plugin>
     </plugins>

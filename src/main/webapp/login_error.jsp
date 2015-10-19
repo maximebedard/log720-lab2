@@ -5,6 +5,11 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:body>
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Erreur:</span>
+        Veuillez essayer à nouveau
+      </div>
       <jsp:include page="./_login_form.jsp" />
     </jsp:body>
 </t:layout>

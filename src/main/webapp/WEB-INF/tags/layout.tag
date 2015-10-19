@@ -2,6 +2,8 @@
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -39,6 +41,16 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Dossiers</a></li>
             <li><a href="#about">Infractions</a></li>
+            <li>
+                <c:choose>
+                    <c:when test="${pageContext.request.remoteUser != null}">
+                        <a href="/lab2/logout.jsp">${pageContext.request.remoteUser}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/lab2/login.jsp">M'authentifier</a>
+                    </c:otherwise>
+                </c:choose>
+            </li>
           </ul>
         </div>
       </div>

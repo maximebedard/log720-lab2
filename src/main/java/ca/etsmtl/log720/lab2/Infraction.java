@@ -1,31 +1,35 @@
 package ca.etsmtl.log720.lab2;
 
-import java.util.HashMap;
-
 public class Infraction {
 
-    private final String description;
-    private final int gravite;
+    private int id;
+    private String description;
+    private int gravite;
 
-    public Infraction(String description, int gravite) {
+    public Infraction() {}
+    public Infraction(int id, String description, int gravite) {
+        this.id = id;
         this.description = description;
         this.gravite = gravite;
     }
 
+    public int getId() {
+        return id;
+    }
     public int getGravite() {
         return gravite;
     }
-
     public String getDescription() {
         return description;
     }
 
-    private static HashMap<String, Infraction> infractions = new HashMap<>();
-    static {
-        infractions.put("1", new Infraction("Délit de fuite", 50));
+    public void setId(int id) {
+        this.id = id;
     }
-
-    public static Infraction getInfraction(String id) {
-        return infractions.get(id);
+    public void setGravite(int gravite) {
+        this.gravite = gravite;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

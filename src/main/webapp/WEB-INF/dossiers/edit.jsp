@@ -40,6 +40,17 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="infractions" class="col-sm-2 control-label">Infractions</label>
+          <div class="col-sm-10">
+            <c:forEach items="${infractions}" var="infraction">
+              <input type="checkbox" id="" name="">
+            </c:forEach>
           </div>
         </div>
       </form>

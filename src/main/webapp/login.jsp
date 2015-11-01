@@ -5,6 +5,6 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:body>
-      <jsp:include page="./_login_form.jsp" />
+      <t:login_form />
     </jsp:body>
 </t:layout>

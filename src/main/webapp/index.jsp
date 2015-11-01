@@ -21,7 +21,7 @@
     <jsp:body>
       <p>Hi I'm the heart of the message</p>
 
-      <sql:query var="rs" dataSource="jdbc/lab2db">
+      <sql:query var="rs" dataSource="jdbc/pg">
           select id, foo, bar from testdata
       </sql:query>
 

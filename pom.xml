@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ca.etsmtl.log720.lab2</groupId>
@@ -36,6 +36,7 @@
           <artifactId>postgresql</artifactId>
           <version>9.4-1204-jdbc42</version>
       </dependency>
+      
   </dependencies>
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -59,7 +60,15 @@
           </webAppConfig>
             <stopKey/>
             <stopPort/>
+
         </configuration>
+          <dependencies>
+              <dependency>
+                  <groupId>org.postgresql</groupId>
+                  <artifactId>postgresql</artifactId>
+                  <version>9.4-1204-jdbc42</version>
+              </dependency>
+          </dependencies>
       </plugin>
     </plugins>
   </build>

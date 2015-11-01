@@ -1,3 +1,5 @@
+<%@tag description="Login form" pageEncoding="UTF-8"%>
+
 <form class="form-signin" method="post" action="j_security_check">
     <h2 class="form-signin-heading">Veuillez vous authentifier</h2>
     <label for="j_username" class="sr-only">Email address</label>

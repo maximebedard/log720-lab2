@@ -4,28 +4,46 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   <display-name>lab2</display-name>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-    <servlet>
-        <servlet-name>Logout</servlet-name>
-        <servlet-class>ca.etsmtl.log720.lab2.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Logout</servlet-name>
-        <url-pattern>/logout.jsp</url-pattern>
-    </servlet-mapping>
+
+  <servlet>
+      <servlet-name>Dossiers</servlet-name>
+      <servlet-class>ca.etsmtl.log720.lab2.servlets.DossiersServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>Dossiers</servlet-name>
+      <url-pattern>/dossiers</url-pattern>
+  </servlet-mapping>
+
+  <!-- Login -->
+
+  <servlet>
+      <servlet-name>Logout</servlet-name>
+      <servlet-class>ca.etsmtl.log720.lab2.servlets.LogoutServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>Logout</servlet-name>
+      <url-pattern>/logout.jsp</url-pattern>
+  </servlet-mapping>
+
   <login-config>
     <auth-method>FORM</auth-method>
+    <realm-name>DEV</realm-name>
     <form-login-config>
         <form-login-page>/login.jsp</form-login-page>
         <form-error-page>/login_error.jsp</form-error-page>
     </form-login-config>
   </login-config>
 
+  <context-param>
+    <param-name>org.eclipse.jetty.servlet.SessionPath</param-name>
+    <param-value>/</param-value>
+  </context-param>
+
   <resource-ref>
-    <description>My DataSource Reference</description>
-    <res-ref-name>jdbc/lab2db</res-ref-name>
+    <description>ETS DataSource</description>
+    <res-ref-name>jdbc/pg</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>

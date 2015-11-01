@@ -2,18 +2,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
-
-<%@ page import="ca.etsmtl.log720.lab2.*" %>
-<%!
-    private DataConnector con = new DataConnector();
-%>
-
-
-
-
-
 <t:layout>
     <jsp:attribute name="header">
       <h1>Welcome</h1>

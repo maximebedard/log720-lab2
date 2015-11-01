@@ -14,6 +14,28 @@ public class InfractionDAO {
     private final String UPDATE_STATEMENT = "UPDATE infractions SET description = ?, gravite = ? WHERE id = ?";
     private final String DELETE_STATEMENT = "DELETE FROM infractions WHERE id = ?";
 
+    public Infraction create(String description, int gravite){
+        Infraction inf = new Infraction();
+        Connection connection = Lab2DAOFactory.createConnection();
+        if(connection == null) {
+            return inf;
+        }
+
+        try{
+            PreparedStatement statement = connection.prepareStatement(INSERT_STATEMENT);
+            statement.setString(1, description);
+            statement.setInt(2, gravite);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                inf.setId(rs.getInt("id"));
+                inf.setDescription(rs.getString("description"));
+                inf.setGravite(rs.getInt("gravite"));
+            }
+            return inf;
+        }catch (SQLException e){
+            return inf;
+        }
+    }
 
     public Infraction read(int id) {
         Infraction i = new Infraction();

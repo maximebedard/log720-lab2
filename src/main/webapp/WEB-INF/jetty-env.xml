@@ -4,16 +4,16 @@
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
     <Get name="securityHandler">
         <Set name="loginService">
-            <New class="org.eclipse.jetty.security.HashLoginService">
-                <Set name="name">Development Realm</Set>
-                <Set name="config"><SystemProperty name="jetty.home" default="."/>/src/main/resources/realm.properties</Set>
+            <New class="org.eclipse.jetty.security.JDBCLoginService">
+                <Set name="name">DEV</Set>
+                <Set name="config"><SystemProperty name="jetty.home" default="."/>/src/main/resources/jdbc_realm.properties</Set>
             </New>
         </Set>
     </Get>
 
     <New id="lab2db" class="org.eclipse.jetty.plus.jndi.Resource">
         <Arg></Arg>
-        <Arg>jdbc/lab2db</Arg>
+        <Arg>jdbc/pg</Arg>
         <Arg>
             <New class="org.postgresql.ds.PGSimpleDataSource">
                 <Set name="User">am05130</Set>

@@ -1,6 +1,6 @@
 <%@tag description="Global layout" pageEncoding="UTF-8"%>
 <%@attribute name="header" fragment="true" %>
-<%@attribute name="footer" fragment="true" %>
+<%@attribute name="scripts" fragment="true" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -39,15 +39,15 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Dossiers</a></li>
-            <li><a href="#about">Infractions</a></li>
+            <li><a href="${pageContext.request.contextPath}/dossiers">Dossiers</a></li>
+            <li><a href="${pageContext.request.contextPath}/infractions">Infractions</a></li>
             <li>
                 <c:choose>
                     <c:when test="${pageContext.request.remoteUser != null}">
-                        <a href="/lab2/logout.jsp">${pageContext.request.remoteUser}</a>
+                        <a href="${pageContext.request.contextPath}/logout.jsp">${pageContext.request.remoteUser}</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="/lab2/login.jsp">M'authentifier</a>
+                        <a href="${pageContext.request.contextPath}/login.jsp">M'authentifier</a>
                     </c:otherwise>
                 </c:choose>
             </li>
@@ -67,5 +67,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/lab2/support/js/bootstrap.min.js"></script>
+    <jsp:invoke fragment="scripts" />
   </body>
 </html>

@@ -10,6 +10,6 @@
         <span class="sr-only">Erreur:</span>
         Veuillez essayer à nouveau
       </div>
-      <jsp:include page="./_login_form.jsp" />
+      <t:login_form />
     </jsp:body>
 </t:layout>

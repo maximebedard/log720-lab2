@@ -7,7 +7,7 @@
         <h1>Modification du dossier</h1>
     </jsp:attribute>
     <jsp:body>
-      <form class="form-horizontal">
+      <form action="${pageContext.request.contextPath}/dossiers?id=${dossier.id}" method="post" class="form-horizontal">
         <div class="form-group">
           <label for="nom" class="col-sm-2 control-label">Nom</label>
           <div class="col-sm-10">
@@ -39,7 +39,7 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Sauvegarder</button>
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
           </div>
         </div>
       </form>

@@ -1,6 +1,7 @@
 package ca.etsmtl.log720.lab2.servlets;
 
 import ca.etsmtl.log720.lab2.daos.DossierDAO;
+import ca.etsmtl.log720.lab2.daos.InfractionDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,9 +12,11 @@ import java.io.IOException;
 public class DossiersServlet extends HttpServlet {
 
     private final DossierDAO dao;
+    private final InfractionDAO idao;
 
     public DossiersServlet() {
         dao = new DossierDAO();
+        idao = new InfractionDAO();
     }
 
     @Override
@@ -25,6 +28,7 @@ public class DossiersServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/dossiers/index.jsp").forward(req, resp);
         } else {
             req.setAttribute("dossier", dao.read(id));
+            req.setAttribute("infractions",idao.readAll());
             req.getRequestDispatcher("/WEB-INF/dossiers/edit.jsp").forward(req, resp);
         }
     }

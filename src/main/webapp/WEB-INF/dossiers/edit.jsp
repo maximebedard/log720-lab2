@@ -49,7 +49,11 @@
           <label for="infractions" class="col-sm-2 control-label">Infractions</label>
           <div class="col-sm-10">
             <c:forEach items="${infractions}" var="infraction">
-              <input type="checkbox" id="" name="">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="infraction_${infraction.id}" name="infractions" value="${infraction.id}"> ${infraction.description}<br />
+                </label>
+              </div>
             </c:forEach>
           </div>
         </div>

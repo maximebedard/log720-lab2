@@ -39,19 +39,28 @@ insert into users (username, pwd) VALUES
   ('henry', 'bob12'),
   ('gaston', 'toto13');
 
-
 insert into roles (role) VALUES
   ('administrateur')
   ('utilisateur');
 
 insert into user_roles (user_id, role_id) VALUES
-  (1,1),
-  (2,2);
+  (1, 1),
+  (2, 2);
 
 insert into dossiers (nom, prenom, no_plaque, no_permis) VALUES
   ('henry', 'lemieux', '123456', '987654'),
   ('gaston', 'rinfrette', '789789', '123456');
 
 insert into infractions (description, gravite) VALUES
-  ('Delit de fuite', 1);
+  ('Delit de fuite', 1),
+  ('ASDASD', 30),
+  ('QWEQWE', 50),
+  ('YOLO', 100),
+  ('RTYRTY', 25);
 
+insert into infraction_dossiers (dossier_id, infraction_id) VALUES
+  (1, 1),
+  (1, 2),
+  (1, 3),
+  (1, 4),
+  (1, 5);

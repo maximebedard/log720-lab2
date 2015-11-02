@@ -1,5 +1,6 @@
 package ca.etsmtl.log720.lab2.servlets;
 
+import ca.etsmtl.log720.lab2.Dossier;
 import ca.etsmtl.log720.lab2.daos.DossierDAO;
 import ca.etsmtl.log720.lab2.daos.InfractionDAO;
 
@@ -27,8 +28,10 @@ public class DossiersServlet extends HttpServlet {
             req.setAttribute("dossiers", dao.readAll());
             req.getRequestDispatcher("/WEB-INF/dossiers/index.jsp").forward(req, resp);
         } else {
-            req.setAttribute("dossier", dao.read(id));
+            Dossier dossier = dao.read(id);
+            req.setAttribute("dossier", dossier);
             req.setAttribute("infractions",idao.readAll());
+            req.setAttribute("selectedInfractions", idao.allForDossier(dossier));
             req.getRequestDispatcher("/WEB-INF/dossiers/edit.jsp").forward(req, resp);
         }
     }

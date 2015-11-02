@@ -51,7 +51,7 @@
             <c:forEach items="${infractions}" var="infraction">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="infraction_${infraction.id}" name="infractions" value="${infraction.id}"> ${infraction.description}<br />
+                  <input type="checkbox" id="infraction_${infraction.id}" name="infractions" value="${infraction.id}" ${selectedInfractions.contains(infraction)? 'checked="checked"' : ''}> ${infraction.description}<br />
                 </label>
               </div>
             </c:forEach>

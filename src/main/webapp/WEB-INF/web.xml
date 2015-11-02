@@ -15,6 +15,18 @@
       <url-pattern>/dossiers</url-pattern>
   </servlet-mapping>
 
+
+  <servlet>
+      <servlet-name>DossierInfractions</servlet-name>
+      <servlet-class>ca.etsmtl.log720.lab2.servlets.DossierInfractionsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>DossierInfractions</servlet-name>
+      <url-pattern>/dossier-infractions</url-pattern>
+  </servlet-mapping>
+
+
   <!-- Login -->
 
   <servlet>

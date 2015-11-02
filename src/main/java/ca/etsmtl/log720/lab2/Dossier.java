@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Dossier implements Serializable {
     public Dossier(){}
 
-    public Dossier(int id, String nom, String prenom, String noPlaque, String noPermis) {
+    public Dossier(Integer id, String nom, String prenom, String noPlaque, String noPermis) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -13,13 +13,13 @@ public class Dossier implements Serializable {
         this.noPermis = noPermis;
     }
 
-    private int id;
+    private Integer id;
     private String nom;
     private String prenom;
     private String noPlaque;
     private String noPermis;
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public void setNom(String nom) {
@@ -35,7 +35,7 @@ public class Dossier implements Serializable {
         this.noPermis = noPermis;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     public String getPrenom() {

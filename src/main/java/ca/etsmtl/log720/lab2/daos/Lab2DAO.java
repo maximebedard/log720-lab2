@@ -9,23 +9,28 @@ import java.sql.SQLException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.logging.Logger;
 
-public class Lab2DAOFactory {
-    public static Connection createConnection() {
-        Connection dbCon = null;
+public class Lab2DAO {
+
+    public class ConnectionFailedException extends RuntimeException {}
+
+    private final Connection connection;
+
+    public Lab2DAO() {
+        connection = createConnection();
+    }
+
+    private Connection createConnection() {
         try {
             Context initContext = new InitialContext();
             Context webContext = (Context)initContext.lookup("java:/comp/env");
 
             DataSource ds = (DataSource) webContext.lookup("jdbc/pg");
-            dbCon = ds.getConnection();
+            return ds.getConnection();
         } catch (NamingException e) {
-            e.printStackTrace();
-            Logger.getGlobal().severe(e.getMessage());
+            throw new ConnectionFailedException();
         } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getGlobal().severe(e.getMessage());
+            throw new ConnectionFailedException();
         }
-        return dbCon;
     }
 
     public static DossierDAO getDossierDAO() {
@@ -34,5 +39,9 @@ public class Lab2DAOFactory {
 
     public static InfractionDAO getInfractionDAO(){
         return new InfractionDAO();
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

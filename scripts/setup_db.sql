@@ -30,9 +30,9 @@ create table infractions (
 );
 
 create table infraction_dossiers (
+  id serial PRIMARY KEY,
   dossier_id integer NOT NULL,
-  infraction_id integer NOT NULL,
-  UNIQUE (dossier_id, infraction_id)
+  infraction_id integer NOT NULL
 );
 
 insert into users (username, pwd) VALUES
@@ -40,7 +40,7 @@ insert into users (username, pwd) VALUES
   ('gaston', 'toto13');
 
 insert into roles (role) VALUES
-  ('administrateur')
+  ('administrateur'),
   ('utilisateur');
 
 insert into user_roles (user_id, role_id) VALUES

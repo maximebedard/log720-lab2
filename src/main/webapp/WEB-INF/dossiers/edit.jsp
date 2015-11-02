@@ -4,7 +4,7 @@
 
 <t:layout>
     <jsp:attribute name="header">
-        <h1>Modification du dossier</h1>
+      <h1>Modification du dossier</h1>
     </jsp:attribute>
     <jsp:body>
       <form action="${pageContext.request.contextPath}/dossiers?id=${dossier.id}" method="post" class="form-horizontal">
@@ -38,23 +38,26 @@
         </div>
 
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <button type="submit" class="btn btn-danger">Supprimer</button>
+          <label for="infractions" class="col-sm-2 control-label">Infractions</label>
+          <div class="col-sm-10">
+            <c:if test="${selectedInfractions.size() > 0}">
+              <h3>Infractions attributés</h3>
+              <ul class="list-group">
+                <c:forEach items="${selectedInfractions}" var="infraction">
+                  <li class="list-group-item">
+                    <span class="badge">${infraction.gravite}</span>
+                    ${infraction.description}
+                  </li>
+                </c:forEach>
+              </ul>
+            </c:if>
           </div>
         </div>
 
-
         <div class="form-group">
-          <label for="infractions" class="col-sm-2 control-label">Infractions</label>
-          <div class="col-sm-10">
-            <c:forEach items="${infractions}" var="infraction">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" id="infraction_${infraction.id}" name="infractions" value="${infraction.id}" ${selectedInfractions.contains(infraction)? 'checked="checked"' : ''}> ${infraction.description}<br />
-                </label>
-              </div>
-            </c:forEach>
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
           </div>
         </div>
       </form>

@@ -40,24 +40,26 @@
       </tbody>
     </table>
 
-    <form action="${pageContext.request.contextPath}/dossiers" method="post" class="form-inline">
-      <div class="form-group">
-        <label class="sr-only" for="nom">Nom</label>
-        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom">
-      </div>
-      <div class="form-group">
-        <label class="sr-only" for="prenom">Prenom</label>
-        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom">
-      </div>
-      <div class="form-group">
-        <label class="sr-only" for="noPlaque"># Plaque</label>
-        <input type="text" class="form-control" id="noPlaque" name="noPlaque" placeholder="# Plaque">
-      </div>
-      <div class="form-group">
-        <label class="sr-only" for="noPermis"># Permis</label>
-        <input type="text" class="form-control" id="noPermis" name="noPermis" placeholder="# Permis">
-      </div>
-      <button type="submit" class="btn btn-default btn-primary">Ajouter</button>
+    <c:if test="${role.equals('administrateur')}">
+      <form action="${pageContext.request.contextPath}/dossiers" method="post" class="form-inline">
+        <div class="form-group">
+          <label class="sr-only" for="nom">Nom</label>
+          <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="prenom">Prenom</label>
+          <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="noPlaque"># Plaque</label>
+          <input type="text" class="form-control" id="noPlaque" name="noPlaque" placeholder="# Plaque">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="noPermis"># Permis</label>
+          <input type="text" class="form-control" id="noPermis" name="noPermis" placeholder="# Permis">
+        </div>
+        <button type="submit" class="btn btn-default btn-primary" name="btnSave">Ajouter</button>
+    </c:if>
     </form>
   </jsp:body>
 </t:layout>

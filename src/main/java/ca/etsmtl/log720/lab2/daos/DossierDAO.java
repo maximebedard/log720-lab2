@@ -17,29 +17,31 @@ public class DossierDAO extends Lab2DAO {
     private final String UPDATE_STATEMENT          = "UPDATE dossiers SET nom = ?, prenom = ?, no_plaque = ?, no_permis = ? WHERE id = ?";
     private final String DELETE_STATEMENT          = "DELETE FROM dossiers WHERE id = ?";
     private final String CREATE_DOSSIER_INFRACTION = "INSERT INTO dossier_infractions (dossier_id, infraction_id) VALUES (?, ?)";
+    private final String UNIQUE_PERMIS_CHECK       = "SELECT id FROM dossiers where no_permis = ?";
 
-    public Dossier create(String nom, String prenom, String noPlaque, String noPermis) {
-        Dossier d = null;
+    public boolean create(String nom, String prenom, String noPlaque, String noPermis) {
+        boolean retour = false;
 
         try {
+            PreparedStatement uniquenessCheck = getConnection().prepareStatement(UNIQUE_PERMIS_CHECK);
+            uniquenessCheck.setString(1, noPermis);
+            ResultSet rsCheck = uniquenessCheck.executeQuery();
+
+            if(rsCheck.next()){
+                return false;
+            }
+
             PreparedStatement statement = getConnection().prepareStatement(INSERT_STATEMENT);
             statement.setString(1, nom);
             statement.setString(2, prenom);
             statement.setString(3, noPlaque);
             statement.setString(4, noPermis);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                d = new Dossier();
-                d.setId(rs.getInt("id"));
-                d.setNom(rs.getString("nom"));
-                d.setPrenom(rs.getString("prenom"));
-                d.setNoPlaque(rs.getString("no_plaque"));
-                d.setNoPermis(rs.getString("no_permis"));
-            }
+            statement.executeUpdate();
+            retour = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return d;
+        return retour;
     }
 
     public Dossier read(Integer id) {
@@ -89,13 +91,23 @@ public class DossierDAO extends Lab2DAO {
 
     public boolean update(int id, String nom, String prenom, String noPlaque, String noPermis) {
         try {
+
+            PreparedStatement uniquenessCheck = getConnection().prepareStatement(UNIQUE_PERMIS_CHECK);
+            uniquenessCheck.setString(1, noPermis);
+            ResultSet rsCheck = uniquenessCheck.executeQuery();
+
+            if(rsCheck.next()){
+                if(rsCheck.getInt("id") != id) return false;
+            }
+
             PreparedStatement statement = getConnection().prepareStatement(UPDATE_STATEMENT);
             statement.setString(1, nom);
             statement.setString(2, prenom);
             statement.setString(3, noPlaque);
             statement.setString(4, noPermis);
             statement.setInt(5, id);
-            return statement.execute();
+            statement.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }

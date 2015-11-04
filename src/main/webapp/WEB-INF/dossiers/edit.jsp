@@ -56,8 +56,9 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <button type="submit" class="btn btn-primary" name="btnSave">Sauvegarder</button>
+            <button type="submit" class="btn btn-danger" name="btnDelete">Supprimer</button>
+            <button type="submit" class="btn btn-warning" name="btnCancel">Annuler</button>
           </div>
         </div>
       </form>

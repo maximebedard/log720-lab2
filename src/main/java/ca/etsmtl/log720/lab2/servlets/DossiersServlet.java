@@ -5,10 +5,12 @@ import ca.etsmtl.log720.lab2.daos.DossierDAO;
 import ca.etsmtl.log720.lab2.daos.InfractionDAO;
 import ca.etsmtl.log720.lab2.daos.Lab2DAO;
 
+import javax.management.relation.Role;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Security;
 
 public class DossiersServlet extends Lab2Servlet {
 
@@ -22,8 +24,14 @@ public class DossiersServlet extends Lab2Servlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
 
+        if(req.isUserInRole("administrateur")){
+            req.setAttribute("role","administrateur");
+        }else{
+            req.setAttribute("role","utilisateur");
+        }
+
+        String id = req.getParameter("id");
         if (id == null) {
             req.setAttribute("dossiers", dao.readAll());
             req.getRequestDispatcher("/WEB-INF/dossiers/index.jsp").forward(req, resp);
@@ -42,18 +50,43 @@ public class DossiersServlet extends Lab2Servlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = tryParse(req.getParameter("id"));
-        String nom = req.getParameter("nom");
-        String prenom = req.getParameter("prenom");
-        String noPlaque = req.getParameter("noPlaque");
-        String noPermis = req.getParameter("noPermis");
 
-        if (id == null) {
-            dao.create(nom, prenom, noPlaque, noPermis);
-        } else {
-            dao.update(id, nom, prenom, noPlaque, noPermis);
+        if(req.getParameter("btnSave") != null) {
+            // user pressed save
+            Integer id = tryParse(req.getParameter("id"));
+            String nom = req.getParameter("nom");
+            String prenom = req.getParameter("prenom");
+            String noPlaque = req.getParameter("noPlaque");
+            String noPermis = req.getParameter("noPermis");
+
+            if (id == null) {
+                boolean worked = dao.create(nom, prenom, noPlaque, noPermis);
+                if(!worked){
+                    resp.sendError(404, "Le numeros du permis n'est pas unique.");
+                }
+            } else {
+                boolean worked = dao.update(id, nom, prenom, noPlaque, noPermis);
+                if(!worked){
+                    resp.sendError(404, "Le numeros du permis n'est pas unique.");
+                }
+            }
+
+            resp.sendRedirect(req.getContextPath() + "/dossiers");
+
+        }else if(req.getParameter("btnDelete") != null){
+            // user pressed delete
+            Integer id = tryParse(req.getParameter("id"));
+            if(id != null){
+                dao.delete(dao.read(id));
+                resp.sendRedirect(req.getContextPath() + "/dossiers");
+            }else{
+                resp.sendError(404, "Le dossier n'existe pas.");
+            }
+
+        }else if(req.getParameter("btnCancel") != null){
+            // user pressed cancel
+            resp.sendRedirect(req.getContextPath() + "/dossiers");
+
         }
-
-        resp.sendRedirect(req.getContextPath() + "/dossiers");
     }
 }

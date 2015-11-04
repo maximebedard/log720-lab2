@@ -16,27 +16,25 @@ public class InfractionDAO extends Lab2DAO {
     private final String DELETE_STATEMENT = "DELETE FROM infractions WHERE id = ?";
     private final String ALL_FOR_DOSSIER = "SELECT infractions.id, description, gravite FROM infractions INNER JOIN infraction_dossiers ON (infractions.id = infraction_id) WHERE dossier_id = ?";
 
-    public Infraction create(String description, int gravite){
-        Infraction inf = new Infraction();
+    public boolean create(String description, int gravite){
+        boolean retour = false;
 
         try{
             PreparedStatement statement = getConnection().prepareStatement(INSERT_STATEMENT);
             statement.setString(1, description);
             statement.setInt(2, gravite);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                inf.setId(rs.getInt("id"));
-                inf.setDescription(rs.getString("description"));
-                inf.setGravite(rs.getInt("gravite"));
-            }
-            return inf;
+            statement.executeUpdate();
+            retour = true;
         }catch (SQLException e){
-            return inf;
+            return retour;
         }
+
+        return retour;
     }
 
-    public Infraction read(int id) {
-        Infraction i = new Infraction();
+    public Infraction read(Integer id) {
+        Infraction i = null;
+        if (id == null) return i;
 
         try {
             PreparedStatement statement = getConnection().prepareStatement(READ_STATEMENT);
@@ -44,6 +42,7 @@ public class InfractionDAO extends Lab2DAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
+                i = new Infraction();
                 i.setId(rs.getInt("id"));
                 i.setDescription(rs.getString("description"));
                 i.setGravite(rs.getInt("gravite"));
@@ -97,5 +96,30 @@ public class InfractionDAO extends Lab2DAO {
         } catch (SQLException e) {
             return infractions;
         }
+    }
+
+    public boolean update(int id, int gravite, String description){
+        try{
+            PreparedStatement statement = getConnection().prepareStatement(UPDATE_STATEMENT);
+            statement.setString(1, description);
+            statement.setInt(2, gravite);
+            statement.setInt(3, id);
+            statement.executeUpdate();
+            return true;
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean delete(Infraction infraction){
+        try {
+            PreparedStatement statement = getConnection().prepareStatement(DELETE_STATEMENT);
+            statement.setInt(1, infraction.getId());
+            return statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

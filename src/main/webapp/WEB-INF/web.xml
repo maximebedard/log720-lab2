@@ -5,6 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   <display-name>lab2</display-name>
 
+  <!-- servlets -->
   <servlet>
       <servlet-name>Dossiers</servlet-name>
       <servlet-class>ca.etsmtl.log720.lab2.servlets.DossiersServlet</servlet-class>
@@ -15,6 +16,16 @@
       <url-pattern>/dossiers</url-pattern>
   </servlet-mapping>
 
+
+  <servlet>
+      <servlet-name>Infractions</servlet-name>
+      <servlet-class>ca.etsmtl.log720.lab2.servlets.InfractionServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Infractions</servlet-name>
+    <url-pattern>/infractions</url-pattern>
+  </servlet-mapping>
 
   <servlet>
       <servlet-name>DossierInfractions</servlet-name>
@@ -60,5 +71,29 @@
     <res-auth>Container</res-auth>
   </resource-ref>
 
+  <!-- roles -->
+  <security-role>
+    <role-name>administrateur</role-name>
+  </security-role>
 
+  <security-role>
+    <role-name>utilisateur</role-name>
+  </security-role>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>websiteAuth</web-resource-name>
+      <url-pattern>/infractions</url-pattern>
+      <url-pattern>/dossiers</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>administrateur</role-name>
+      <role-name>utilisateur</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
 </web-app>

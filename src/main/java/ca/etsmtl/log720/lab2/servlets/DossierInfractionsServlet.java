@@ -30,6 +30,7 @@ public class DossierInfractionsServlet extends Lab2Servlet {
         }
         else {
             req.setAttribute("dossier", dossier);
+            req.setAttribute("infractions", idao.readAll());
             req.getRequestDispatcher("/WEB-INF/dossiers/infractions.jsp").forward(req, resp);
         }
     }

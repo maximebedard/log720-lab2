@@ -4,7 +4,7 @@
 
 <t:layout>
     <jsp:attribute name="header">
-      <h1>Modification du dossier</h1>
+      <h1>Ajouter des infractions au dossier</h1>
     </jsp:attribute>
     <jsp:body>
       <form action="${pageContext.request.contextPath}/dossier-infractions?id=${dossier.id}" method="post">
@@ -19,12 +19,8 @@
           </c:forEach>
         </c:if>
 
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-          </div>
-        </div>
+
+        <button type="submit" class="btn btn-primary">Ajouter</button>
       </form>
     </jsp:body>
 </t:layout>

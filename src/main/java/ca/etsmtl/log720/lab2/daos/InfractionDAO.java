@@ -1,6 +1,7 @@
 package ca.etsmtl.log720.lab2.daos;
 
 import ca.etsmtl.log720.lab2.Dossier;
+import ca.etsmtl.log720.lab2.DossierInfraction;
 import ca.etsmtl.log720.lab2.Infraction;
 
 import java.sql.*;
@@ -14,7 +15,7 @@ public class InfractionDAO extends Lab2DAO {
     private final String READ_ALL_STATEMENT = "SELECT id, description, gravite FROM infractions";
     private final String UPDATE_STATEMENT = "UPDATE infractions SET description = ?, gravite = ? WHERE id = ?";
     private final String DELETE_STATEMENT = "DELETE FROM infractions WHERE id = ?";
-    private final String ALL_FOR_DOSSIER = "SELECT infractions.id, description, gravite FROM infractions INNER JOIN infraction_dossiers ON (infractions.id = infraction_id) WHERE dossier_id = ?";
+    private final String ALL_FOR_DOSSIER = "SELECT infractions.id, description, gravite, infraction_dossiers.id as idDossierInfraction FROM infractions INNER JOIN infraction_dossiers ON (infractions.id = infraction_id) WHERE dossier_id = ?";
 
     public boolean create(String description, int gravite){
         boolean retour = false;
@@ -54,8 +55,8 @@ public class InfractionDAO extends Lab2DAO {
         }
     }
 
-    public List<Infraction> allForDossier(Dossier dossier) {
-        List<Infraction> infractions = new ArrayList<>();
+    public List<DossierInfraction> allForDossier(Dossier dossier) {
+        List<DossierInfraction> infractions = new ArrayList<>();
 
         try {
             PreparedStatement statement = getConnection().prepareStatement(ALL_FOR_DOSSIER);
@@ -63,11 +64,11 @@ public class InfractionDAO extends Lab2DAO {
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()) {
-                Infraction i = new Infraction();
+                DossierInfraction i = new DossierInfraction();
                 i.setId(rs.getInt("id"));
                 i.setDescription(rs.getString("description"));
                 i.setGravite(rs.getInt("gravite"));
-
+                i.setId_dossierInfraction(rs.getInt("idDossierInfraction"));
                 infractions.add(i);
             }
             return infractions;

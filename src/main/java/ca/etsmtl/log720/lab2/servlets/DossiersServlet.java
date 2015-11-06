@@ -42,6 +42,7 @@ public class DossiersServlet extends Lab2Servlet {
             }
             else {
                 req.setAttribute("dossier", dossier);
+                req.setAttribute("infractions", idao.readAll());
                 req.setAttribute("selectedInfractions", idao.allForDossier(dossier));
                 req.getRequestDispatcher("/WEB-INF/dossiers/edit.jsp").forward(req, resp);
             }
@@ -86,7 +87,24 @@ public class DossiersServlet extends Lab2Servlet {
         }else if(req.getParameter("btnCancel") != null){
             // user pressed cancel
             resp.sendRedirect(req.getContextPath() + "/dossiers");
-
+        }else if(req.getParameter("btnAddInfraction") != null){
+            Integer idInfraction = tryParse(req.getParameter("btnAddInfraction"));
+            Integer idDossier = tryParse(req.getParameter("id"));
+            if(idInfraction != null && idDossier != null){
+                dao.createInfractionForDossier(idDossier, idInfraction);
+                resp.sendRedirect(req.getContextPath() + "/dossiers");
+            }else{
+                resp.sendError(404, "Une erreur s'est produite lors de l'ajout de l'infraction");
+            }
+        }else if(req.getParameter("btnDelInfraction") != null){
+            Integer idInfraction = tryParse(req.getParameter("btnDelInfraction"));
+            Integer idDossier = tryParse(req.getParameter("id"));
+            if(idInfraction != null && idDossier != null){
+                dao.deleteInfraction(idInfraction);
+                resp.sendRedirect(req.getContextPath() + "/dossiers");
+            }else{
+                resp.sendError(404, "Une erreur s'est produite lors de la suppression de l'infraction");
+            }
         }
     }
 }

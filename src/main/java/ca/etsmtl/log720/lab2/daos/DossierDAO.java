@@ -16,9 +16,9 @@ public class DossierDAO extends Lab2DAO {
     private final String READ_ALL_STATEMENT        = "SELECT id, nom, prenom, no_plaque, no_permis FROM dossiers";
     private final String UPDATE_STATEMENT          = "UPDATE dossiers SET nom = ?, prenom = ?, no_plaque = ?, no_permis = ? WHERE id = ?";
     private final String DELETE_STATEMENT          = "DELETE FROM dossiers WHERE id = ?";
-    private final String CREATE_DOSSIER_INFRACTION = "INSERT INTO dossier_infractions (dossier_id, infraction_id) VALUES (?, ?)";
+    private final String CREATE_DOSSIER_INFRACTION = "INSERT INTO infraction_dossiers (dossier_id, infraction_id) VALUES (?, ?)";
     private final String UNIQUE_PERMIS_CHECK       = "SELECT id FROM dossiers where no_permis = ?";
-
+    private final String DELETE_INFRACTION         = "DELETE FROM infraction_dossiers WHERE id = ?";
     public boolean create(String nom, String prenom, String noPlaque, String noPermis) {
         boolean retour = false;
 
@@ -65,6 +65,18 @@ public class DossierDAO extends Lab2DAO {
             e.printStackTrace();
         }
         return d;
+    }
+
+    public boolean deleteInfraction(Integer idInfractionDossier){
+        try {
+            PreparedStatement statement = getConnection().prepareStatement(DELETE_INFRACTION);
+            statement.setInt(1, idInfractionDossier);
+            statement.executeUpdate();
+            return true;
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     public List<Dossier> readAll() {
@@ -129,6 +141,23 @@ public class DossierDAO extends Lab2DAO {
         }
         return false;
     }
+
+
+    public boolean createInfractionForDossier(Integer id, Integer infraction) {
+        if(id == null) return false;
+        try {
+
+            PreparedStatement statement = getConnection().prepareStatement(CREATE_DOSSIER_INFRACTION);
+            statement.setInt(1, id);
+            statement.setInt(2, infraction);
+            statement.execute();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
 
     public boolean delete(Dossier dossier) {
         try {

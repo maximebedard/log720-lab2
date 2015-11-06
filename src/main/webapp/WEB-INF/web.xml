@@ -16,6 +16,14 @@
       <url-pattern>/dossiers</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>Utilisateurs</servlet-name>
+    <servlet-class>ca.etsmtl.log720.lab2.servlets.UtilisateurServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Utilisateurs</servlet-name>
+    <url-pattern>/utilisateurs</url-pattern>
+  </servlet-mapping>
 
   <servlet>
       <servlet-name>Infractions</servlet-name>
@@ -81,16 +89,31 @@
   </security-role>
 
   <security-constraint>
+  <web-resource-collection>
+    <web-resource-name>websiteAuth</web-resource-name>
+    <url-pattern>/infractions</url-pattern>
+    <url-pattern>/dossiers</url-pattern>
+    <http-method>GET</http-method>
+    <http-method>POST</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>administrateur</role-name>
+    <role-name>utilisateur</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+    <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
     <web-resource-collection>
-      <web-resource-name>websiteAuth</web-resource-name>
-      <url-pattern>/infractions</url-pattern>
-      <url-pattern>/dossiers</url-pattern>
+      <web-resource-name>UserCreationDomain</web-resource-name>
+      <url-pattern>/utilisateurs</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
     <auth-constraint>
       <role-name>administrateur</role-name>
-      <role-name>utilisateur</role-name>
     </auth-constraint>
     <user-data-constraint>
       <transport-guarantee>NONE</transport-guarantee>

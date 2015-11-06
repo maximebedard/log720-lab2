@@ -41,6 +41,7 @@
           <ul class="nav navbar-nav">
             <li><a href="${pageContext.request.contextPath}/dossiers">Dossiers</a></li>
             <li><a href="${pageContext.request.contextPath}/infractions">Infractions</a></li>
+            <li><a href="${pageContext.request.contextPath}/utilisateurs">Utilisateurs</a></li>
             <li>
                 <c:choose>
                     <c:when test="${pageContext.request.remoteUser != null}">

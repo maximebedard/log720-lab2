@@ -108,8 +108,8 @@ public class DossierDAO extends Lab2DAO {
             uniquenessCheck.setString(1, noPermis);
             ResultSet rsCheck = uniquenessCheck.executeQuery();
 
-            if(rsCheck.next()){
-                if(rsCheck.getInt("id") != id) return false;
+            if (rsCheck.next()) {
+                if (rsCheck.getInt("id") != id) return false;
             }
 
             PreparedStatement statement = getConnection().prepareStatement(UPDATE_STATEMENT);
@@ -126,27 +126,9 @@ public class DossierDAO extends Lab2DAO {
         return false;
     }
 
-    public boolean createInfractionsForDossier(Integer id, String[] infractions) {
-        if(id == null) return false;
-        try {
-            for(String infraction: infractions){
-                PreparedStatement statement = getConnection().prepareStatement(CREATE_DOSSIER_INFRACTION);
-                statement.setInt(1, id);
-                statement.setInt(2, Integer.valueOf(infraction));
-                statement.execute();
-            }
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-
     public boolean createInfractionForDossier(Integer id, Integer infraction) {
         if(id == null) return false;
         try {
-
             PreparedStatement statement = getConnection().prepareStatement(CREATE_DOSSIER_INFRACTION);
             statement.setInt(1, id);
             statement.setInt(2, infraction);

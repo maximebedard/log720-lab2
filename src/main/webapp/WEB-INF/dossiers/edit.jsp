@@ -37,97 +37,77 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary" name="btnSave">Sauvegarder</button>
-            <button type="submit" class="btn btn-danger" name="btnDelete">Supprimer</button>
-            <button type="submit" class="btn btn-warning" name="btnCancel">Annuler</button>
-          </div>
-        </div>
 
         <div class="form-group">
           <label for="infractions" class="col-sm-2 control-label">Infractions</label>
           <div class="col-sm-10">
-            <c:if test="${selectedInfractions.size() > 0}">
-              <h3>Infractions attributés</h3>
-              <ul class="list-group">
-                <table class="table table-bordered table-hover">
-                  <thead>
+            <c:choose>
+              <c:when test="${selectedInfractions.size() > 0}">
+                <ul class="list-group">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Description</th>
+                        <c:if test="${role.equals('utilisateur')}">
+                          <th>Actions</th>
+                        </c:if>
+                      </tr>
+                    </thead>
+                  <c:forEach items="${selectedInfractions}" var="infraction">
                     <tr>
-                      <th>Description</th>
-                      <th>Sévérité</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                <c:forEach items="${selectedInfractions}" var="infraction">
-                  <tr>
-                    <td>${infraction.description}</td>
-                    <td><span class="badge">${infraction.gravite}</span></td>
-                    <td>
+                      <td>
+                        ${infraction.description}
+                        <span class="badge pull-right">${infraction.gravite}</span>
+                      </td>
                       <c:if test="${role.equals('utilisateur')}">
-                        <button type="submit" class="btn btn-danger" name="btnDelInfraction" value="${infraction.id_dossierInfraction}">Supprimer cette infraction du dossier</button>
+                        <td>
+                          <button type="submit" class="btn btn-danger" name="btnDelInfraction" value="${infraction.id_dossierInfraction}">
+                          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer
+                          </button>
+                        </td>
                       </c:if>
-                    </td>
-                  </tr>
-                </c:forEach>
-                </table>
-              </ul>
-            </c:if>
+                    </tr>
+                  </c:forEach>
+                  </table>
+                </ul>
+              </c:when>
+              <c:otherwise>
+                Aucune infractions attribués à ce dossier.
+              </c:otherwise>
+            </c:choose>
           </div>
         </div>
 
-        <c:if test="${role.equals('utilisateur')}">
-          <div class="form-group" id="accordion">
-              <div class="panel panel-default" id="panel1">
-                  <div class="panel-heading">
-                    <h4 class="panel-title">
-                      <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
-                        Ajouter des infractions
-                      </a>
-                    </h4>
-                  </div>
-                  <div id="collapseOne" class="panel-collapse collapse collapse">
-                      <div class="panel-body">
-                        <t:layout>
-                          <jsp:attribute name="header">
-                            <h1>Liste de toutes les infractions</h1>
-                          </jsp:attribute>
-                          <jsp:attribute name="scripts">
-                            <script type="text/javascript">
-                            </script>
-                          </jsp:attribute>
-                          <jsp:body>
-                            <table class="table table-bordered table-hover">
-                              <thead>
-                                <tr>
-                                  <th>ID</th>
-                                  <th>Sévérité</th>
-                                  <th>Description</th>
-                                  <th></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                              <c:forEach items="${infractions}" var="infraction">
-                                <tr>
-                                  <td>${infraction.id}</td>
-                                  <td>${infraction.gravite}</td>
-                                  <td>${infraction.description}</td>
-                                  <td><button type="submit" class="btn btn-primary" name="btnAddInfraction" value="${infraction.id}">Ajouter cette infraction au dossier</button></td>
-                                </tr>
-                              </c:forEach>
-                              </tbody>
-                            </table>
-                          </jsp:body>
-                        </t:layout>
-                      </div>
-                  </div>
-              </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" name="btnSave" ${role.equals('utilisateur') ? "disabled": ""}>Sauvegarder</button>
+            <button type="submit" class="btn btn-danger" name="btnDelete" ${role.equals('utilisateur') ? "disabled": ""}>Supprimer</button>
+            <button type="submit" class="btn btn-warning" name="btnCancel"${role.equals('utilisateur') ? "disabled": ""}>Annuler</button>
           </div>
-        </c:if>
-
-
-
+        </div>
 
       </form>
+      <c:if test="${role.equals('utilisateur')}">
+        <h1>Ajout des infractions</h1>
+        <form action="${pageContext.request.contextPath}/dossiers?id=${dossier.id}" method="post" class="form-horizontal">
+          <c:choose>
+            <c:when test="${infractions.size() > 0}">
+              <div class="well">
+                <c:forEach items="${infractions}" var="infraction">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" id="infraction_${infraction.id}" name="infractions" value="${infraction.id}"> ${infraction.description} (${infraction.gravite})<br />
+                    </label>
+                  </div>
+                </c:forEach>
+              </div>
+              <button type="submit" class="btn btn-primary" name="btnAddInfractions">Ajouter les infractions selectionnés</button>
+            </c:when>
+            <c:otherwise>
+              Vous devez ajouter des infractions à la banque d'infractions avant de procéder à l'attribution d'infractions à ce dossier.
+            </c:otherwise>
+          </c:choose>
+        </form>
+      </c:if>
     </jsp:body>
 </t:layout>

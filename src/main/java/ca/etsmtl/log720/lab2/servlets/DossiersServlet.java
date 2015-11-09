@@ -5,12 +5,10 @@ import ca.etsmtl.log720.lab2.daos.DossierDAO;
 import ca.etsmtl.log720.lab2.daos.InfractionDAO;
 import ca.etsmtl.log720.lab2.daos.Lab2DAO;
 
-import javax.management.relation.Role;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Security;
 
 public class DossiersServlet extends Lab2Servlet {
 
@@ -25,10 +23,10 @@ public class DossiersServlet extends Lab2Servlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        if(req.isUserInRole("administrateur")){
-            req.setAttribute("role","administrateur");
-        }else{
-            req.setAttribute("role","utilisateur");
+        if (isAdmin(req)) {
+            req.setAttribute("role", "administrateur");
+        } else {
+            req.setAttribute("role", "utilisateur");
         }
 
         String id = req.getParameter("id");
@@ -39,8 +37,7 @@ public class DossiersServlet extends Lab2Servlet {
             Dossier dossier = dao.read(tryParse(id));
             if (dossier == null) {
                 resp.sendError(404, "Le dossier n'existe pas.");
-            }
-            else {
+            } else {
                 req.setAttribute("dossier", dossier);
                 req.setAttribute("infractions", idao.readAll());
                 req.setAttribute("selectedInfractions", idao.allForDossier(dossier));
@@ -51,60 +48,78 @@ public class DossiersServlet extends Lab2Servlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        if(req.getParameter("btnSave") != null) {
-            // user pressed save
-            Integer id = tryParse(req.getParameter("id"));
-            String nom = req.getParameter("nom");
-            String prenom = req.getParameter("prenom");
-            String noPlaque = req.getParameter("noPlaque");
-            String noPermis = req.getParameter("noPermis");
-
-            if (id == null) {
-                boolean worked = dao.create(nom, prenom, noPlaque, noPermis);
-                if(!worked){
-                    resp.sendError(404, "Le numeros du permis n'est pas unique.");
-                }
-            } else {
-                boolean worked = dao.update(id, nom, prenom, noPlaque, noPermis);
-                if(!worked){
-                    resp.sendError(404, "Le numeros du permis n'est pas unique.");
-                }
-            }
-
+        if (req.getParameter("btnSave") != null) {
+            save(req, resp);
+        } else if (req.getParameter("btnDelete") != null) {
+            delete(req, resp);
+        } else if (req.getParameter("btnCancel") != null) {
             resp.sendRedirect(req.getContextPath() + "/dossiers");
-
-        }else if(req.getParameter("btnDelete") != null){
-            // user pressed delete
-            Integer id = tryParse(req.getParameter("id"));
-            if(id != null){
-                dao.delete(dao.read(id));
-                resp.sendRedirect(req.getContextPath() + "/dossiers");
-            }else{
-                resp.sendError(404, "Le dossier n'existe pas.");
-            }
-
-        }else if(req.getParameter("btnCancel") != null){
-            // user pressed cancel
-            resp.sendRedirect(req.getContextPath() + "/dossiers");
-        }else if(req.getParameter("btnAddInfraction") != null){
-            Integer idInfraction = tryParse(req.getParameter("btnAddInfraction"));
-            Integer idDossier = tryParse(req.getParameter("id"));
-            if(idInfraction != null && idDossier != null){
-                dao.createInfractionForDossier(idDossier, idInfraction);
-                resp.sendRedirect(req.getContextPath() + "/dossiers");
-            }else{
-                resp.sendError(404, "Une erreur s'est produite lors de l'ajout de l'infraction");
-            }
-        }else if(req.getParameter("btnDelInfraction") != null){
-            Integer idInfraction = tryParse(req.getParameter("btnDelInfraction"));
-            Integer idDossier = tryParse(req.getParameter("id"));
-            if(idInfraction != null && idDossier != null){
-                dao.deleteInfraction(idInfraction);
-                resp.sendRedirect(req.getContextPath() + "/dossiers");
-            }else{
-                resp.sendError(404, "Une erreur s'est produite lors de la suppression de l'infraction");
-            }
+        } else if (req.getParameter("btnAddInfractions") != null) {
+            addInfraction(req, resp);
+        } else if (req.getParameter("btnDelInfraction") != null) {
+            deleteInfraction(req, resp);
         }
+    }
+
+    private void deleteInfraction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Integer infractionId = tryParse(req.getParameter("btnDelInfraction"));
+        Integer dossierId = tryParse(req.getParameter("id"));
+        if (infractionId != null && dossierId != null) {
+            dao.deleteInfraction(infractionId);
+            resp.sendRedirect(req.getContextPath() + "/dossiers?id=" + dossierId);
+        } else {
+            resp.sendError(404, "Une erreur s'est produite lors de la suppression de l'infraction");
+        }
+    }
+
+    private void addInfraction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Integer dossierId = tryParse(req.getParameter("id"));
+        String[] infractions = req.getParameterValues("infractions");
+        for(String infraction:infractions) {
+            Integer infractionId = tryParse(infraction);
+            dao.createInfractionForDossier(dossierId, infractionId);
+        }
+        resp.sendRedirect(req.getContextPath() + "/dossiers?id=" + dossierId);
+    }
+
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (!isAdmin(req)) {
+            resp.sendError(401, "Accès refusé.");
+            return;
+        }
+
+        Integer dossierId = tryParse(req.getParameter("id"));
+        if (dossierId != null) {
+            dao.delete(dao.read(dossierId));
+            resp.sendRedirect(req.getContextPath() + "/dossiers");
+        } else {
+            resp.sendError(404, "Le dossier n'existe pas.");
+        }
+    }
+
+    private void save(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (!isAdmin(req)) {
+            resp.sendError(401, "Accès refusé.");
+            return;
+        }
+
+        Integer dossierId = tryParse(req.getParameter("id"));
+        String nom = req.getParameter("nom");
+        String prenom = req.getParameter("prenom");
+        String noPlaque = req.getParameter("noPlaque");
+        String noPermis = req.getParameter("noPermis");
+
+        boolean worked;
+        if (dossierId == null) {
+            worked = dao.create(nom, prenom, noPlaque, noPermis);
+        } else {
+            worked = dao.update(dossierId, nom, prenom, noPlaque, noPermis);
+        }
+
+        if (!worked) {
+            resp.sendError(500, "Le numeros du permis n'est pas unique.");
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/dossiers");
     }
 }

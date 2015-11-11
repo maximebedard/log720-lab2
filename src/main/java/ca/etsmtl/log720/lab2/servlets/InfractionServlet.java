@@ -60,15 +60,20 @@ public class InfractionServlet extends Lab2Servlet {
 
             String description = req.getParameter("description");
             if(gravite != null){
-                if (id == null) {
-                    boolean worked = idao.create(description, gravite);
-                    if(!worked){
-                        resp.sendError(404, "Une erreur s'est produite...");
-                    }
-                } else {
-                    boolean worked = idao.update(id,gravite,description);
-                    if(!worked){
-                        resp.sendError(404, "Une erreur s'est produite...");
+
+                if(gravite > 100 || gravite < 0){
+                    resp.sendError(404, "La sévérité doit être entre 0 et 100 (inclusivement) ...");
+                }else {
+                    if (id == null) {
+                        boolean worked = idao.create(description, gravite);
+                        if (!worked) {
+                            resp.sendError(404, "Une erreur s'est produite...");
+                        }
+                    } else {
+                        boolean worked = idao.update(id, gravite, description);
+                        if (!worked) {
+                            resp.sendError(404, "Une erreur s'est produite...");
+                        }
                     }
                 }
                 resp.sendRedirect(req.getContextPath() + "/infractions");

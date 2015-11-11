@@ -25,9 +25,9 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary" name="btnSave">Sauvegarder</button>
-            <button type="submit" class="btn btn-danger" name="btnDelete">Supprimer</button>
-            <button type="submit" class="btn btn-warning" name="btnCancel">Annuler</button>
+            <button type="submit" class="btn btn-primary" name="btnSave" ${role.equals("utilisateur") ? "disabled" : ""}>Sauvegarder</button>
+            <button type="submit" class="btn btn-danger" name="btnDelete" ${role.equals("utilisateur") ? "disabled" : ""}>Supprimer</button>
+            <button type="submit" class="btn btn-warning" name="btnCancel" ${role.equals("utilisateur") ? "disabled" : ""}>Annuler</button>
           </div>
         </div>
       </form>

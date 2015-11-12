@@ -5,6 +5,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   <display-name>lab2</display-name>
 
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
   <!-- servlets -->
   <servlet>
       <servlet-name>Dossiers</servlet-name>
@@ -18,7 +22,7 @@
 
   <servlet-mapping>
       <servlet-name>Dossiers</servlet-name>
-      <url-pattern>/</url-pattern>
+      <url-pattern></url-pattern>
   </servlet-mapping>
 
   <servlet>
